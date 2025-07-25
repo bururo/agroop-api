@@ -1,0 +1,26 @@
+{
+  "name": "agroop-api",
+  "version": "1.0.0",
+  "description": "Use the starter kit to get your docs deployed and ready to customize.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "mintlify dev",
+    "build": "mintlify build",
+    "start": "mintlify start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bururo/agroop-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bururo/agroop-api/issues"
+  },
+  "homepage": "https://github.com/bururo/agroop-api#readme",
+  "dependencies": {
+    "mintlify": "^4.2.33"
+  }
+}
