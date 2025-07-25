@@ -1,0 +1,19 @@
+---
+title: 'Analiticos'
+description: 'Como autenticar com nossa API'
+mode: 'wide'
+---
+
+A Agroop API foi desenhada para ser **rápida, segura e escalável**.  
+Para garantir uma experiência equilibrada para todos os utilizadores, aplicamos boas práticas de controlo de tráfego.
+
+### Limites de utilização:
+
+- **Pedidos por minuto:** 60
+- **Pedidos diários por entidade:** 10.000
+- **Timeout por pedido:** 30 segundos
+
+Apesar de os utilizadores não terem acesso direto a estas métricas, nós monitorizamos cada pedido por entidade para manter a qualidade do serviço.
+
+> ⚠ Caso exceda os limites, poderá receber erros **429 (Too Many Requests)**.  
+> Se necessitar de limites superiores, entre em contacto: **support@agroop.net**.

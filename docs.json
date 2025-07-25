@@ -1,89 +1,55 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "aspen",
+  "name": "Agroop API",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#00C4B3",
+    "light": "#00C4B3",
+    "dark": "#005B45"
   },
+  "description": "A Agroop API permite aceder de forma simples e segura aos dados recolhidos pelos equipamentos fornecidos ou integrados pela Agroop, como sensores, sondas e dispositivos de monitorização agrícola. A documentação inclui instruções sobre autenticação, estrutura das respostas e exemplos de utilização para facilitar a integração com sistemas externos.",
   "favicon": "/favicon.svg",
+  "search": {
+    "prompt": "Pesquisar na documentação..."
+  },
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
+        "group": "Geral",
+        "icon": "file",
+        "pages": ["index", "documentation/subscription", "documentation/devices"]
       },
       {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
+        "group": "API",
+        "icon": "key",
+        "pages": ["api/api-key", "api/authentication", "api/tracking"]
+      },
+      {
+        "group": "Endpoints",
+        "icon": "terminal",
+        "pages": [
+          "api/requests",
+          "api/endpoint/get",
+          "api/endpoint/create",
+          "api/endpoint/delete",
+          "api/endpoint/webhook"
         ]
       }
     ],
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Agroop",
+          "href": "https://agroop.net",
+          "icon": "leaf",
+          "color": {
+            "dark": "#fff"
+          }
         },
         {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Farmoot",
+          "href": "https://app.agroop.net",
+          "icon": "leaf"
         }
       ]
     }
@@ -95,21 +61,59 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
+        "label": "Recovery key",
         "href": "mailto:hi@mintlify.com"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
+      "label": "API",
       "href": "https://dashboard.mintlify.com"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+      "x": "https://x.com/agrooproject",
+      "linkedin": "https://www.linkedin.com/company/agroop/",
+      "youtube": "https://www.youtube.com/Agroop_2014",
+      "facebook": "https://www.facebook.com/Agroop/",
+      "instagram": "https://www.instagram.com/agroop_net/"
+    },
+    "links": [
+      {
+        "header": "Comunidade",
+        "items": [
+          {
+            "label": "Blog / Podcast",
+            "href": "https://www.agroop.net/blog"
+          },
+          {
+            "label": "Parceiros",
+            "href": "https://www.agroop.net/parceiros"
+          },
+          {
+            "label": "Recrutamento",
+            "href": "https://www.agroop.net/recrutamento"
+          }
+        ]
+      },
+      {
+        "header": "Suporte",
+        "items": [
+          {
+            "label": "Media kit",
+            "href": "https://drive.google.com/file/d/1zq4R2uTBp83Dlty887-ZopScCsoYlYsa/view?usp=sharing"
+          },
+          {
+            "label": "Tutoriais",
+            "href": "https://youtube.com/playlist?list=PL5SlIywKbmDxtujzXPfxV66tlmK5myu-U&si=C7M1wBxi_EihXJ18"
+          },
+          {
+            "label": "Contacto",
+            "href": "mailto:info@agroop.net"
+          }
+        ]
+      }
+    ]
   }
 }
