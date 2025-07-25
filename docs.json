@@ -16,17 +16,14 @@
     "groups": [
       {
         "group": "Geral",
-        "icon": "file",
         "pages": ["index", "documentation/subscription", "documentation/devices"]
       },
       {
         "group": "API",
-        "icon": "key",
         "pages": ["api/api-key", "api/authentication", "api/tracking"]
       },
       {
         "group": "Endpoints",
-        "icon": "terminal",
         "pages": [
           "api/requests",
           "api/endpoint/get",
