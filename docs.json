@@ -16,21 +16,15 @@
     "groups": [
       {
         "group": "Geral",
-        "pages": ["index", "documentation/subscription", "documentation/devices"]
+        "pages": ["index", "subscription", "devices"]
       },
       {
         "group": "API",
-        "pages": ["api/api-key", "api/authentication", "api/tracking"]
+        "pages": ["api-key", "authentication", "tracking"]
       },
       {
         "group": "Endpoints",
-        "pages": [
-          "api/requests",
-          "api/endpoint/get",
-          "api/endpoint/create",
-          "api/endpoint/delete",
-          "api/endpoint/webhook"
-        ]
+        "pages": ["requests", "endpoint/get", "endpoint/create", "endpoint/delete", "endpoint/webhook"]
       }
     ],
     "global": {
