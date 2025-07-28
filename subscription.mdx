@@ -1,27 +1,41 @@
 ---
 title: 'Subscrição'
-description: 'Como autenticar com nossa API'
+description: 'A Agroop API requer uma subscrição ativa para gerar a sua API Key e aceder aos dados.'
 mode: 'wide'
 ---
 
+import { ImageGallery } from '/snippets/image-gallery.jsx';
+
 Para utilizar a **Agroop API**, é necessário ter uma **subscrição ativa**.  
-A subscrição é a chave para que a sua entidade possa aceder aos dados recolhidos pelos nossos dispositivos.
+A subscrição é a chave que permite à sua entidade aceder aos dados recolhidos pelos nossos dispositivos.
 
 ### Como funciona a subscrição?
 
-- A subscrição é **associada à entidade** (empresa ou organização).
-- Tem **duração mínima de 1 ano**, podendo ser renovada anualmente.
-- Está sujeita a custos associados. Para mais informações, contacte: **support@agroop.net**.
+- A subscrição é **associada à entidade** (empresa, ou organização, ou pessoa).
+- Está vinculada a um endereço de e-mail, através do qual receberá o token aceder à API Key.
+- A subscrição tem uma **duração mínima de 1 ano**, podendo ser renovada anualmente.
+- A subscrição tem custos associados. Para mais informações, contacte: **support@agroop.net**.
 
-> ⚠ **Importante:** sem uma subscrição ativa, não é possível gerar a **API Key** nem consultar dados.
+<Warning>
+  {' '}
+  Sem uma subscrição ativa, não é possível gerar a API Key nem consultar dados. Os dados só estarão disponíveis durante o
+  período de vigência da subscrição. Caso renove posteriormente e haja um intervalo entre as subscrições, os dados desse
+  período não serão disponibilizados.
+</Warning>
 
-### A nossa plataforma Farmoop
+### A nossa plataforma FARMOOT
 
-Além da API, disponibilizamos a **plataforma Farmoop**, uma ferramenta poderosa onde você pode:
+<ImageGallery
+  images={[
+    { src: 'images/farmoot-satellite.png', alt: 'Imagens de satelite' },
+    { src: 'images/farmoot-wm.png', alt: 'Gestão hídrica' },
+    { src: 'images/farmoot-ci.png', alt: 'Dados da cultura' },
+  ]}
+/>
 
-- Visualizar dados recolhidos em tempo real;
-- Gerar relatórios e análises avançadas;
-- Integrar outras funcionalidades não disponíveis na API.
+Em alternativa à API, temos a nossa **plataforma FARMOOT**, uma ferramenta poderosa que oferece acesso aos dados recolhidos
+pelos dispositivos, processamento e análise avançada para uma gestão mais eficiente da rega, visualização de imagens de satélite
+e relatórios detalhados com análises essenciais para otimizar a produção. Essas funcionalidades não estão disponíveis na
+API.
 
-Se quiser saber mais sobre a plataforma Farmoop, fale connosco!  
-_(Aqui podemos colocar imagens e links para a plataforma.)_
+Se quiser saber mais sobre a plataforma Farmoop, fale connosco!
