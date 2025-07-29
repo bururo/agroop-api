@@ -1,6 +1,60 @@
 ---
 title: 'Autenticação'
-description: 'Como autenticar com nossa API'
+description: 'Como autenticar pedidos à Agroop API'
+mode: 'wide'
 ---
 
-# Content of your authentication page
+A Agroop API utiliza **API Key** como método de autenticação para garantir segurança e identificação da entidade que faz os pedidos.
+
+### Formato da Autenticação
+
+Todos os pedidos à API (exceto os que servem para obter a chave) devem incluir o header **Authorization** com o seguinte formato:
+
+```bash
+Authorization: ApiKey YOUR_KEY
+```
+
+<Warning>
+  Atenção: É obrigatório incluir o prefixo ApiKey antes da sua chave. Se colar apenas a chave, sem este prefixo, a
+  autenticação falhará.
+</Warning>
+
+### Endpoints que requerem autenticação
+
+Atualmente, a API possui 5 endpoints principais.  
+Todos os pedidos exigem a API Key exceto:  
+• `POST /access/token` → Para gerar um token temporário enviado por e-mail.  
+• `POST /access` → Para recuperar a API Key como token temporário.
+
+Os restantes endpoints necessitam do header Authorization com o formato correto.
+
+### Exemplo de pedido autenticado
+
+```cURL request
+curl -X GET "https://intranet.agroop.net/external-api/devices/serials" \
+-H "accept: application/json" \
+-H "Authorization: ApiKey YOUR_API_KEY"
+```
+
+Lista dos endpoints que requerem autenticação:  
+• `GET /devices/serials` → Pedir lista de equipamentos.  
+• `GET /devices/{profile}/{serial}` → Pedir inforamção do equipamento.  
+• `GET /devices/{profile}/{serial}/readings` → Pedir leituras do equipamento.  
+• `DELETE /access` → Revogar a API Key.
+
+### Boas práticas de segurança
+
+• Guarde a sua API Key em local seguro e não a partilhe publicamente.  
+• A API Key é única para a sua entidade e permite acesso a todos os dispositivos associados.  
+• Em caso de comprometimento, revogue a API Key imediatamente utilizando DELETE /access.
+
+<Warning>
+  Atenção: Caso revogue a API Key, será necessário entrar em contato com a equipa de{' '}
+  <a href="mailto:support@agroop.net">suporte</a> da Agroop para gerar nova API Key.
+</Warning>
+
+### Dica
+
+Caso perca a sua API Key, pode recuperá-la através da página Recuperar Key no cabeçalho ou usando os endpoints de acesso:  
+• `POST /access/token` → Gerar token.  
+• `POST /access` → Obter API Key.

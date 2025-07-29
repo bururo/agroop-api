@@ -1,216 +1,424 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.3",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
+    "title": "Agroop API",
+    "description": "Demonstração da Agroop API",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://intranet.agroop.net/external-api"
     }
   ],
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Formato obrigatório: `ApiKey YOUR_KEY`"
+      }
+    }
+  },
   "security": [
     {
-      "bearerAuth": []
+      "apiKeyAuth": []
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
+    "/access/token": {
+      "post": {
+        "tags": ["access"],
+        "summary": "Gerar novo Token",
+        "description": "Gera um token temporário que será enviado por e-mail para recuperar a API Key.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "agroop@agroop.net"
+                  }
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token enviado por email"
+          },
+          "400": {
+            "description": "Erro na requisição"
+          }
+        }
+      }
+    },
+    "/access": {
+      "post": {
+        "tags": ["access"],
+        "summary": "Pedir API Key",
+        "description": "Com o token temporário (só pode ser usado uma vez), retorna a API Key para a tua entidade",
+        "security": [],
         "parameters": [
           {
-            "name": "limit",
+            "name": "token",
             "in": "query",
-            "description": "The maximum number of results to return",
+            "required": true,
+            "description": "Token temporário enviado por email",
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string",
+              "example": "YOUR_TOKEN"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "API Key obtida com sucesso",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+                "example": {
+                  "entityId": "ENTITY_ID",
+                  "apiKey": "YOUR_KEY"
                 }
               }
             }
           },
           "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "Erro na requisição"
           }
         }
       },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
+      "delete": {
+        "summary": "Revogar API Key",
+        "description": "Revoga a API Key atualmente utilizada.",
+        "operationId": "revokeAccess",
         "responses": {
           "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
+            "description": "API Key revogada com sucesso"
           },
           "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "Erro na requisição"
           }
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/devices/serials": {
+      "get": {
+        "tags": ["devices"],
+        "summary": "Pedir a lista de equipamentos",
+        "description": "Retorna uma lista com todos os equipamentos disponiveis pelo identificador único",
+        "operationId": "getAvailableSerials",
+        "responses": {
+          "200": {
+            "description": "Lista de equipamento obtida com sucesso",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "serial": "M05DE3832415251205715",
+                    "profile": "PYCNO"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Erro na requisição"
+          }
+        }
+      }
+    },
+    "/devices/{profile}/{serial}": {
+      "get": {
+        "tags": ["devices"],
+        "summary": "Pedir informação do equipamento pelo identificador único",
+        "description": "Retorna a localização, as interfaces e a subscrição do equipamento identificado.",
+        "operationId": "getDetailsForSerial",
         "parameters": [
           {
-            "name": "id",
+            "name": "serial",
             "in": "path",
-            "description": "ID of plant to delete",
+            "description": "Identificação única do equipamento.",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string",
+              "example": "M05DE3832415251205715"
+            }
+          },
+          {
+            "name": "profile",
+            "in": "path",
+            "description": "Seleção do fornecedor do equipamento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["PYCNO", "REAL_WEATHER_STATION", "YDOC", "TALKPOOL", "BMETERS"],
+              "example": "PYCNO"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "Informação obtida sucesso",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                "example": {
+                  "group": "AIR",
+                  "location": {
+                    "latitude": 0,
+                    "longitude": 0
+                  },
+                  "subscriptions": [
+                    {
+                      "startDate": "2025-07-29",
+                      "endDate": "2025-07-29"
+                    }
+                  ],
+                  "connectors": [
+                    {
+                      "connectorId": "string",
+                      "interfaces": ["AirTemp"]
+                    }
+                  ]
                 }
               }
             }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
+          "400": {
+            "description": "Erro na requisição"
           }
         }
       }
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+    "/devices/{profile}/{serial}/readings": {
+      "get": {
+        "tags": ["devices"],
+        "summary": "Pedir leituras do equipamento pelo identificador único",
+        "description": "Retorna uma lista de leituras de um equipamento dentro de um perido de tempo.",
+        "operationId": "getReadingsBySerial",
+        "parameters": [
+          {
+            "name": "serial",
+            "in": "path",
+            "description": "Identificação única do equipamento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "M05DE3832415251205715"
+            }
+          },
+          {
+            "name": "profile",
+            "in": "path",
+            "description": "Seleção do fornecedor do equipamento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["PYCNO", "REAL_WEATHER_STATION", "YDOC", "TALKPOOL", "BMETERS"],
+              "example": "PYCNO"
+            }
+          },
+          {
+            "name": "connectorId",
+            "in": "query",
+            "description": "Identificação do conector das interfaces. Por predefinição utilize sempre 'ORIGIN', exceto quando o dispositivo for um equipamento 'PULSE' do fornecedor 'PYCNO'. Nesse caso, substitua  'ORIGIN' por 'PULSE'",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "ORIGIN"
+            }
+          },
+          {
+            "name": "interfaces",
+            "in": "query",
+            "description": "Seleção das interfaces do equipamento cujas leituras deseja obter.",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AirTemp",
+                  "AirTempMax",
+                  "AirTempMin",
+                  "AirTempDaily",
+                  "AirHum",
+                  "AirHumMax",
+                  "AirHumMin",
+                  "AirHumDaily",
+                  "Snow",
+                  "Clouds",
+                  "CloudsDaily",
+                  "WindDir",
+                  "WindDirDaily",
+                  "WindSpeedRaw",
+                  "WindSpeed",
+                  "WindSpeedDaily",
+                  "Sunlight",
+                  "SolarIrradiance",
+                  "SolarIrradianceDaily",
+                  "Precipitation",
+                  "PrecipitationTotal",
+                  "PrecipitationDaily",
+                  "Flowmeter",
+                  "FlowmeterTotal",
+                  "FlowmeterAvg",
+                  "EToDaily",
+                  "DewPoint",
+                  "DewPointDaily",
+                  "Pressure",
+                  "PressureDaily",
+                  "SMraw10",
+                  "SMmm10",
+                  "SMraw15",
+                  "SMmm15",
+                  "SMraw20",
+                  "SMmm20",
+                  "SMraw25",
+                  "SMmm25",
+                  "SMraw30",
+                  "SMmm30",
+                  "SMraw40",
+                  "SMmm40",
+                  "SMraw50",
+                  "SMmm50",
+                  "SMraw55",
+                  "SMmm55",
+                  "SMraw60",
+                  "SMmm60",
+                  "SMraw70",
+                  "SMmm70",
+                  "SMraw80",
+                  "SMmm80",
+                  "SMraw85",
+                  "SMmm85",
+                  "SoilTemp10",
+                  "SoilTemp15",
+                  "SoilTemp20",
+                  "SoilTemp30",
+                  "SoilTemp40",
+                  "SoilTemp45",
+                  "SoilTemp50",
+                  "SoilTemp60",
+                  "SoilTemp70",
+                  "SoilTemp75",
+                  "SoilTemp80",
+                  "SoilSalinity10",
+                  "SoilSalinity20",
+                  "SoilSalinity30",
+                  "SoilSalinity40",
+                  "SoilSalinity50",
+                  "SoilSalinity60",
+                  "SoilSalinity70",
+                  "SoilSalinity80",
+                  "TicksAvg",
+                  "TicksTotal",
+                  "TicksCount",
+                  "WaterEntrance10",
+                  "WaterEntrance15",
+                  "WaterEntrance20",
+                  "WaterEntrance25",
+                  "WaterEntrance30",
+                  "WaterEntrance40",
+                  "WaterEntrance50",
+                  "WaterEntrance55",
+                  "WaterEntrance60",
+                  "WaterEntrance70",
+                  "WaterEntrance80",
+                  "WaterEntrance85",
+                  "WaterLoss10",
+                  "WaterLoss15",
+                  "WaterLoss20",
+                  "WaterLoss25",
+                  "WaterLoss30",
+                  "WaterLoss40",
+                  "WaterLoss50",
+                  "WaterLoss55",
+                  "WaterLoss60",
+                  "WaterLoss70",
+                  "WaterLoss80",
+                  "WaterLoss85",
+                  "AgeOfMoon",
+                  "SunriseTime",
+                  "SunsetTime",
+                  "Bat",
+                  "Rssi",
+                  "WaterEntranceDaily",
+                  "GustSpeedRaw",
+                  "GustSpeed",
+                  "UltraViolet",
+                  "Rain",
+                  "PopDaily",
+                  "PopHourly",
+                  "ConditionHourly",
+                  "ConditionDaily",
+                  "Unknown"
+                ]
+              }
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-01-01"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-12-31"
+            }
+          },
+          {
+            "name": "aggregation",
+            "in": "query",
+            "description": "Seleceção do método de agregação aplicado às leituras das interfaces escolhidas.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["none", "hour", "day", "week", "month", "auto"],
+              "default": "none"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de leituras retornada com sucesso",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "timestamp": 1722206400000,
+                    "AirTemp": 22.4,
+                    "AirHum": 67.1
+                  },
+                  {
+                    "timestamp": 1722292800000,
+                    "AirTemp": 21.8,
+                    "AirHum": 70.3
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Erro na requisição"
+          }
+        }
       }
     }
   }

@@ -20,11 +20,17 @@
       },
       {
         "group": "API",
-        "pages": ["api-key", "authentication", "tracking"]
-      },
-      {
-        "group": "Endpoints",
-        "pages": ["requests", "endpoint/get", "endpoint/create", "endpoint/delete", "endpoint/webhook"]
+        "pages": [
+          "api-key",
+          "authentication",
+          "endpoint/access-token",
+          "endpoint/access",
+          "endpoint/access-revoke",
+          "endpoint/devices",
+          "endpoint/device-info",
+          "endpoint/device-readings",
+          "tracking"
+        ]
       }
     ],
     "global": {
@@ -50,16 +56,10 @@
     "dark": "/logo/dark.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Recovery key",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
     "primary": {
       "type": "button",
-      "label": "API",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Recuperar Key",
+      "href": "http://localhost:3000/recovery-key"
     }
   },
   "footer": {
